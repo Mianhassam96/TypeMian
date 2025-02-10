@@ -1,69 +1,40 @@
-# Welcome to your Lovable project
+# TypeMian: Typing Speed Test
 
-## Project info
+🚀 **TypeMian** is a simple and interactive typing speed test tool that lets users practice and improve their typing speed. Measure your words per minute (WPM), accuracy, and typing efficiency in real time.
 
-**URL**: https://lovable.dev/projects/47f36dc8-38d4-45ef-97f4-a8aa40c46258
+---
 
-## How can I edit this code?
+## 🛠 Features
 
-There are several ways of editing your application.
+- Real-time typing speed (WPM) calculation  
+- Accuracy tracking  
+- User-friendly interface  
+- Results summary after each test  
+- Mobile and desktop responsive design  
 
-**Use Lovable**
+Install dependencies
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/47f36dc8-38d4-45ef-97f4-a8aa40c46258) and start prompting.
+npm install
 
-Changes made via Lovable will be committed automatically to this repo.
+Run the project
 
-**Use your preferred IDE**
+npm start
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Getting Started  
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Clone the repository
 
-Follow these steps:
+```bash
+git clone https://github.com/Mianhassam96/TypeMian.git
+cd TypeMian
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+📜 License
+This project is licensed under the MIT License.
+✨ Footer
+Made with 💙 by Mian Hassam | Powered by MultiMian
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+vbnet
+Copy
+Edit
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/47f36dc8-38d4-45ef-97f4-a8aa40c46258) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Let me know if you'd like any edits! 😊
