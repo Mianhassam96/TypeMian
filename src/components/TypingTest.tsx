@@ -1,11 +1,27 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Timer, Award } from 'lucide-react';
+import { Timer, Award, Trophy, Sparkles } from 'lucide-react';
 import Stats from './Stats';
 import TextDisplay from './TextDisplay';
 import Results from './Results';
 
-const sampleText = "The quick brown fox jumps over the lazy dog. Programming is both an art and a science, requiring creativity and logical thinking. Technology continues to shape our world in unprecedented ways.";
+const LEVELS = {
+  beginner: {
+    text: "The quick brown fox jumps over the lazy dog. Simple words for typing practice.",
+    name: "Beginner",
+    color: "text-green-400"
+  },
+  intermediate: {
+    text: "Programming is both an art and a science, requiring creativity and logical thinking. Technology continues to shape our world.",
+    name: "Intermediate",
+    color: "text-blue-400"
+  },
+  advanced: {
+    text: "The complexity of modern software development demands proficiency in multiple programming paradigms and architectural patterns.",
+    name: "Advanced",
+    color: "text-purple-400"
+  }
+};
 
 export interface TypingStats {
   wpm: number;
@@ -17,7 +33,8 @@ export interface TypingStats {
 }
 
 const TypingTest = () => {
-  const [text, setText] = useState(sampleText);
+  const [currentLevel, setCurrentLevel] = useState<keyof typeof LEVELS>("beginner");
+  const [text, setText] = useState(LEVELS[currentLevel].text);
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [isFinished, setIsFinished] = useState(false);
@@ -30,11 +47,18 @@ const TypingTest = () => {
     elapsedTime: 0,
   });
 
+  useEffect(() => {
+    setText(LEVELS[currentLevel].text);
+    setUserInput("");
+    setStartTime(null);
+    setIsFinished(false);
+  }, [currentLevel]);
+
   const calculateStats = useCallback(() => {
     if (!startTime) return;
 
-    const timeElapsed = (Date.now() - startTime) / 1000 / 60; // in minutes
-    const wordsTyped = userInput.length / 5; // assuming average word length of 5 characters
+    const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+    const wordsTyped = userInput.length / 5;
     const wpm = Math.round(wordsTyped / timeElapsed);
 
     let correct = 0;
@@ -92,35 +116,55 @@ const TypingTest = () => {
   };
 
   return (
-    <div className="min-h-screen bg-primary p-8 font-mono text-primary-foreground animate-fadeIn">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <Timer className="w-6 h-6" />
-            <span className="text-xl">{stats.elapsedTime}s</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Award className="w-6 h-6" />
-            <span className="text-xl">{stats.wpm} WPM</span>
-          </div>
-        </div>
-
-        {!isFinished ? (
-          <>
-            <Stats stats={stats} />
-            <TextDisplay originalText={text} userInput={userInput} />
-            <textarea
-              className="w-full h-20 mt-8 p-4 bg-muted text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-accent resize-none"
-              value={userInput}
-              onChange={handleInput}
-              placeholder="Start typing..."
-              autoFocus
-            />
-          </>
-        ) : (
-          <Results stats={stats} onReset={resetTest} />
-        )}
+    <div className="max-w-4xl mx-auto space-y-8 font-mono">
+      {/* Level Selection */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        {Object.entries(LEVELS).map(([key, level]) => (
+          <button
+            key={key}
+            onClick={() => setCurrentLevel(key as keyof typeof LEVELS)}
+            className={`p-4 rounded-lg border-2 transition-all ${
+              currentLevel === key
+                ? 'border-accent bg-accent/10'
+                : 'border-muted hover:border-accent/50'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              {key === 'beginner' && <Sparkles className={level.color} size={20} />}
+              {key === 'intermediate' && <Award className={level.color} size={20} />}
+              {key === 'advanced' && <Trophy className={level.color} size={20} />}
+              <span className={`font-medium ${level.color}`}>{level.name}</span>
+            </div>
+          </button>
+        ))}
       </div>
+
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-2">
+          <Timer className="w-6 h-6 text-accent" />
+          <span className="text-xl">{stats.elapsedTime}s</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Award className="w-6 h-6 text-accent" />
+          <span className="text-xl">{stats.wpm} WPM</span>
+        </div>
+      </div>
+
+      {!isFinished ? (
+        <>
+          <Stats stats={stats} />
+          <TextDisplay originalText={text} userInput={userInput} />
+          <textarea
+            className="w-full h-20 mt-8 p-4 bg-muted text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-accent resize-none transition-all"
+            value={userInput}
+            onChange={handleInput}
+            placeholder="Start typing..."
+            autoFocus
+          />
+        </>
+      ) : (
+        <Results stats={stats} onReset={resetTest} />
+      )}
     </div>
   );
 };

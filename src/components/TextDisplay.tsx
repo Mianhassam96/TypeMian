@@ -8,9 +8,9 @@ interface TextDisplayProps {
 
 const TextDisplay: React.FC<TextDisplayProps> = ({ originalText, userInput }) => {
   return (
-    <div className="text-lg leading-relaxed bg-muted p-6 rounded-lg animate-slideUp">
+    <div className="text-lg leading-relaxed bg-muted/50 backdrop-blur-sm p-8 rounded-lg border border-accent/20 shadow-lg animate-slideUp">
       {originalText.split('').map((char, index) => {
-        let className = "transition-colors duration-150";
+        let className = "font-mono transition-all duration-150";
         
         if (index < userInput.length) {
           if (userInput[index] === char) {
