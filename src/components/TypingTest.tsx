@@ -4,6 +4,7 @@ import { Timer, Award, Trophy, Sparkles } from 'lucide-react';
 import Stats from './Stats';
 import TextDisplay from './TextDisplay';
 import Results from './Results';
+import { Slider } from "./ui/slider";
 
 const LEVELS = {
   beginner: {
@@ -38,6 +39,8 @@ const TypingTest = () => {
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [isFinished, setIsFinished] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(60); // Default 60 seconds
+  const [timeLeft, setTimeLeft] = useState(selectedTime);
   const [stats, setStats] = useState<TypingStats>({
     wpm: 0,
     accuracy: 0,
@@ -52,7 +55,8 @@ const TypingTest = () => {
     setUserInput("");
     setStartTime(null);
     setIsFinished(false);
-  }, [currentLevel]);
+    setTimeLeft(selectedTime);
+  }, [currentLevel, selectedTime]);
 
   const calculateStats = useCallback(() => {
     if (!startTime) return;
@@ -84,6 +88,29 @@ const TypingTest = () => {
   }, [startTime, text, userInput]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (startTime && !isFinished) {
+      timer = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const remaining = selectedTime - elapsed;
+        
+        if (remaining <= 0) {
+          setIsFinished(true);
+          setTimeLeft(0);
+          clearInterval(timer);
+        } else {
+          setTimeLeft(remaining);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [startTime, selectedTime, isFinished]);
+
+  useEffect(() => {
     if (userInput.length > 0 && !startTime) {
       setStartTime(Date.now());
     }
@@ -105,6 +132,7 @@ const TypingTest = () => {
     setUserInput("");
     setStartTime(null);
     setIsFinished(false);
+    setTimeLeft(selectedTime);
     setStats({
       wpm: 0,
       accuracy: 0,
@@ -139,10 +167,32 @@ const TypingTest = () => {
         ))}
       </div>
 
+      {/* Time Selection */}
+      <div className="bg-muted/50 backdrop-blur-sm p-6 rounded-lg border border-accent/20 shadow-lg">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-accent">Test Duration: {selectedTime} seconds</span>
+          <div className="w-64">
+            <Slider
+              value={[selectedTime]}
+              onValueChange={(value) => {
+                if (!startTime) {
+                  setSelectedTime(value[0]);
+                  setTimeLeft(value[0]);
+                }
+              }}
+              min={30}
+              max={300}
+              step={30}
+              disabled={!!startTime}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-2">
           <Timer className="w-6 h-6 text-accent" />
-          <span className="text-xl">{stats.elapsedTime}s</span>
+          <span className="text-xl">{timeLeft}s</span>
         </div>
         <div className="flex items-center gap-2">
           <Award className="w-6 h-6 text-accent" />
