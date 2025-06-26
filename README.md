@@ -33,6 +33,8 @@ This project is licensed under the MIT License.
 ✨ Footer
 Made with 💙 by Mian Hassam | Powered by MultiMian
 
+live Preview: https://type-mian.vercel.app/
+
 vbnet
 Copy
 Edit
