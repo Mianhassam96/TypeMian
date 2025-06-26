@@ -20,6 +20,8 @@ Run the project
 
 npm start
 
+live Preview: https://type-mian.vercel.app/
+
 ## 🚀 Getting Started  
 
 ### Clone the repository
@@ -42,5 +44,3 @@ Edit
 Let me know if you'd like any edits! 😊
 
 
-
-live Preview: https://type-mian.vercel.app/
